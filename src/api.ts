@@ -8,3 +8,16 @@ export const getAllTodos = async (): Promise<Todo[]> => {
 
   return todos
 }
+export const addTodo = async (todo: Todo): Promise<Todo> => {
+  const res = await fetch('http://localhost:3001/todos', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(todo),
+  })
+
+  const newTodo = await res.json()
+
+  return newTodo
+}
