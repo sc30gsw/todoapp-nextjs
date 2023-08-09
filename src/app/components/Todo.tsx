@@ -1,12 +1,18 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { deleteTodo, editTodo } from 'src/api'
 import { Todo } from 'src/types'
 
 const Todo = ({ todo }: { todo: Todo }) => {
+  const ref = useRef<HTMLInputElement | null>(null)
+
   const [isEdit, setIsEdit] = useState(false)
   const [editText, setEditText] = useState(todo.text)
+
+  useEffect(() => {
+    if (isEdit) ref.current?.focus()
+  }, [isEdit])
 
   const handleEdit = () => setIsEdit(true)
 
@@ -21,6 +27,7 @@ const Todo = ({ todo }: { todo: Todo }) => {
     <li className="flex justify-between p-4 bg-white border-l-4 border-blue-500 rounded shadow">
       {isEdit ? (
         <input
+          ref={ref}
           type="text"
           className="mr-2 py-1 px-2 rounded border-gray-400 border"
           value={editText}
