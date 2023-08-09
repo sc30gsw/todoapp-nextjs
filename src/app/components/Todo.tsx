@@ -1,20 +1,22 @@
 'use client'
 
 import React, { useState } from 'react'
-import { editTodo } from 'src/api'
+import { deleteTodo, editTodo } from 'src/api'
 import { Todo } from 'src/types'
 
 const Todo = ({ todo }: { todo: Todo }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [editText, setEditText] = useState(todo.text)
 
-  const handleEdit = async () => setIsEdit(true)
+  const handleEdit = () => setIsEdit(true)
 
   const handleSave = async () => {
     await editTodo(todo.id, editText)
-
     setIsEdit(false)
   }
+
+  const handleDelete = async () => await deleteTodo(todo.id)
+
   return (
     <li className="flex justify-between p-4 bg-white border-l-4 border-blue-500 rounded shadow">
       {isEdit ? (
@@ -38,7 +40,9 @@ const Todo = ({ todo }: { todo: Todo }) => {
           </button>
         )}
 
-        <button className="text-red-500">Delete</button>
+        <button className="text-red-500" onClick={handleDelete}>
+          Delete
+        </button>
       </div>
     </li>
   )
